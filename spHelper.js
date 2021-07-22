@@ -114,8 +114,8 @@ function spGetCurrentUserId() {
             spGetUserById(10);
         });
 */
-function spGetUserById(userId) {
-    var siteURL = _spPageContextInfo.webAbsoluteUrl + "/_api/Web/SiteUserInfoList/Items?$filter=Id eq " + userId;
+function spGetUserById(userId, siteURL = _spPageContextInfo.webAbsoluteUrl) {
+    var siteURL = siteURL + "/_api/Web/SiteUserInfoList/Items?$filter=Id eq " + userId;
 
     var getHeaders = new Headers({
         'Accept': 'application/json; odata=verbose',
