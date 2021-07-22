@@ -11,4 +11,5 @@ In SharePoint you will want to store this .js file in a document library. Then y
     <script type="text/javascript"  src="spHelper.js"></script>
    
 # Notes
- > - for **siteURL**, if the List is on the same site as your script, remove the variable and it will using the current site.
+ > - Purely written in Javascript without the requirements of additional libraries.
+ > - For **siteURL**, if the List is on the same site as your script, remove the variable and it will using the current site.
