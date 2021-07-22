@@ -2,7 +2,7 @@
 A Javascript library to assist with common/useful SharePoint and REST List functions using pure javascript.
 
 > Written with Visual Studio Code (https://code.visualstudio.com/) 
-> - Auhtor: Austin Livengood
+> - Author: Austin Livengood
 > 
 
 ## How To Use
