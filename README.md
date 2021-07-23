@@ -1,5 +1,5 @@
 # spHelper
-A Javascript library to assist with common/useful SharePoint and REST List functions using pure javascript.
+A Javascript library to assist with common/useful SharePoint REST List functions using pure javascript.
 
 > Written with Visual Studio Code (https://code.visualstudio.com/) 
 > - Author: Austin Livengood
