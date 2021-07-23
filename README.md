@@ -3,7 +3,7 @@ A Javascript library to assist with common/useful SharePoint REST List functions
 
 > Written with Visual Studio Code (https://code.visualstudio.com/) 
 > - Author: Austin Livengood
-> 
+> - Original Author in JQuery: William Bechard (https://github.com/ury2ok2000/SPHelper)
 
 ## How To Use
 In SharePoint you will want to store this .js file in a document library. Then you just reference it like any other JavaScript library reference:
