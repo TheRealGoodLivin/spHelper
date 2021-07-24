@@ -252,10 +252,10 @@ function spCreateListItem(listTitle, itemProperties, siteURL = _spPageContextInf
             var itemProperties = {};
             itemProperties['Title'] = 'test';
 
-            spUpdateListItemByID('test', 2, itemProperties);
+            spUpdateListItemById('test', 2, itemProperties);
         });
 */
-function spUpdateListItemByID(listTitle, itemId, itemProperties, siteURL = _spPageContextInfo.webAbsoluteUrl) {
+function spUpdateListItemById(listTitle, itemId, itemProperties, siteURL = _spPageContextInfo.webAbsoluteUrl) {
     UpdateFormDigest(_spPageContextInfo.webServerRelativeUrl, _spFormDigestRefreshInterval);
     var listGetURL = siteURL + "/_api/web/lists/GetByTitle('" + listTitle + "')/items(" + itemId.toString() + ")";
     var listPostURL = siteURL + "/_api/web/lists/GetByTitle('" + listTitle + "')/items(" + itemId.toString() + ")";
@@ -315,10 +315,10 @@ function spUpdateListItemByID(listTitle, itemId, itemProperties, siteURL = _spPa
 
     USE: 
         document.addEventListener("DOMContentLoaded", function(event){
-            var listItem = spGetListItemByID('test', 2);
+            var listItem = spGetListItemById('test', 2);
         });
 */
-function spGetListItemByID(listTitle, itemId, siteURL = _spPageContextInfo.webAbsoluteUrl) {
+function spGetListItemById(listTitle, itemId, siteURL = _spPageContextInfo.webAbsoluteUrl) {
     var listGetURL = siteURL + "/_api/web/lists/GetByTitle('" + listTitle + "')/items(" + itemId.toString() + ")";
     var getOptions = {
         method: 'GET',
