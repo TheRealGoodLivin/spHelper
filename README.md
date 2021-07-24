@@ -13,3 +13,22 @@ In SharePoint, the best place to store a .js file is within your Site Assets (Do
 # Notes
  > - Purely written in Javascript without the requirements of additional libraries.
  > - For **siteURL**, if the List is on the same site as your script, remove the variable and it will using the current site.
+
+# Functions
+### SharePoint -- Delete List:
+    Without Site URL: spDeleteList(ListName);
+    With Site URL: spDeleteList(ListName, SiteURL);
+    
+#### Use: 
+        document.addEventListener("DOMContentLoaded", function(event){
+            spDeleteList('Documents');
+        });
+
+### SharePoint -- Delete List Item:
+    Without Site URL: spDeleteListItem(ListName, ItemID);
+    With Site URL: spDeleteListItem(ListName, ItemID, SiteURL);
+    
+#### Use: 
+        document.addEventListener("DOMContentLoaded", function(event){
+            spDeleteListItem('test', '1');
+        });
