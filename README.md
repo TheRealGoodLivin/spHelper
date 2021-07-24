@@ -127,8 +127,3 @@ In SharePoint, the best place to store a .js file is within your Site Assets (Do
             document.addEventListener("DOMContentLoaded", function(event){
                 spModalOpen('Test', 500, 500, 'https://google.com', 'url');
             });
-
-
-
-
-
