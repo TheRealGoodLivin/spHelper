@@ -3,7 +3,7 @@ A Javascript library to assist with common/useful SharePoint REST List functions
 
 > Written with Visual Studio Code (https://code.visualstudio.com/) 
 > - Author: Austin Livengood
-> - Original Reference with JQuery: William Bechard (https://github.com/ury2ok2000/SPHelper)
+> - Original Reference Author (JQuery Version): William Bechard (https://github.com/ury2ok2000/SPHelper)
 
 ## How To Use
 In SharePoint, the best place to store a .js file is within your Site Assets (Document Library) folder within your Site. You can use 'spHelper.js' or the 'spHelper.min.js'. Once you have uploaded the file, you just reference it like any other JavaScript library reference:
