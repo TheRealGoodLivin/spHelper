@@ -5,15 +5,18 @@ A Javascript library to assist with common/useful SharePoint REST List functions
 > - Author: Austin Livengood
 > - Original Reference Author (JQuery Version): William Bechard (https://github.com/ury2ok2000/SPHelper)
 
+# Notes
+ > - Purely written in Javascript without the requirements of additional libraries.
+ > - For **siteURL**, if the List is on the same site as your script, remove the variable and it will using the current site.
+
+# Feature Changes
+ > - Custom Modal Dialog for custom list fields.
+
 ## How To Use
 In SharePoint, the best place to store a .js file is within your Site Assets (Document Library) folder within your Site. You can use 'spHelper.js' or the 'spHelper.min.js'. Once you have uploaded the file, you just reference it like any other JavaScript library reference:
 
     <script type="text/javascript"  src="LOCATION/spHelper.js"></script>
     <script type="text/javascript"  src="LOCATION/spHelper.min.js"></script>
-   
-# Notes
- > - Purely written in Javascript without the requirements of additional libraries.
- > - For **siteURL**, if the List is on the same site as your script, remove the variable and it will using the current site.
 
 # Functions
 ## SharePoint -- Delete List:
