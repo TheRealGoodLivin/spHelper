@@ -433,7 +433,7 @@ function spGetAllLists(siteURL = _spPageContextInfo.webAbsoluteUrl) {
     DESCRIPTION: SharePoint Modal with URL or HTML
 
     NOTE: 
-        -refreshOnSave is if you want the main page to refresh when user clicks on save of the List Form
+        -modalRefresh is if you want the main page to refresh when user clicks on save of the List Form
             --true=Page Refreshes
             --false=Page does not Refresh
 
@@ -452,16 +452,17 @@ function spGetAllLists(siteURL = _spPageContextInfo.webAbsoluteUrl) {
                 spModalOpen('Test', 500, 500, 'https://google.com', 'url');
             });
 */
-function spModalOpen(modalTitle, modalWidth, modalHeight, modalInformation, modalOption = 'url', modalRefresh = 'false') {
+function spModalOpen(modalTitle, modalWidth, modalHeight, modalInformation, modalOption = 'url', modalAutoResize = false, modalRefresh = false) {
     var options = {
         allowMaximize: false,
         showClose: true,
+        autoSize: modalAutoResize,
         width: modalWidth,
         height: modalHeight,
         title: modalTitle,
         dialogReturnValueCallback: function dialogReturnValueCallback(dialogResult) {
             if (dialogResult != SP.UI.DialogResult.cancel) {
-                if(refreshOnSave) SP.UI.ModalDialog.RefreshPage(dialogResult);
+                if(modalRefresh) SP.UI.ModalDialog.RefreshPage(dialogResult);
             }
         }
     };
