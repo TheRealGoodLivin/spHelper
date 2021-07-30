@@ -20,88 +20,88 @@ In SharePoint, the best place to store a .js file is within your Site Assets (Do
 
 # Functions
 ## SharePoint -- Delete List:
-    Without Site URL: spDeleteList(ListName);
-    With Site URL: spDeleteList(ListName, SiteURL);
+    Without Site URL: spDeleteList('ListName').then(res => { console.log('List was deleted!') });
+    With Site URL: spDeleteList('ListName', SiteURL).then(res => { console.log('List was deleted!') });
     
 #### Use: 
         document.addEventListener("DOMContentLoaded", function(event){
-            spDeleteList('Documents');
+            spDeleteList('ListName').then(res => { console.log('List was deleted!') });
         });
         
 ## SharePoint -- Delete List Item:
-    Without Site URL: spDeleteListItem(ListName, ItemID);
-    With Site URL: spDeleteListItem(ListName, ItemID, SiteURL);
+    Without Site URL: spDeleteListItem('ListName', ItemID).then(res => { console.log('Item was deleted!') });
+    With Site URL: spDeleteListItem('ListName', ItemID, SiteURL).then(res => { console.log('Item was deleted!') });
     
 #### Use: 
         document.addEventListener("DOMContentLoaded", function(event){
-            spDeleteListItem('test', '1');
+            spDeleteListItem('ListName', ItemID).then(res => { console.log('Item was deleted!') });
         });
 
 ## SharePoint -- Get Current User ID:
-    spGetCurrentUserId();
+    spGetCurrentUserId().then(res => { console.log(res) });
     
 #### Use: 
         document.addEventListener("DOMContentLoaded", function(event){
-            var currentUserID = spGetCurrentUserId();
+            spGetCurrentUserId().then(res => { console.log(res) });
         });
 
 ## SharePoint -- Get User Data By ID:
-    spGetUserById(UserID);
+    spGetUserById(UserID).then(res => { console.log(res) });
     
 #### Use: 
         document.addEventListener("DOMContentLoaded", function(event){
-            var userData = spGetUserById(10);
+            spGetUserById(10).then(res => { console.log(res) });
         });
 
 ## SharePoint -- Grabs All Items From a List:
-    Without Site URL: spGetListItems(ListName, ItemID);
-    With Site URL: spGetListItems(ListName, ItemID, SiteURL);
+    Without Site URL: spGetListItems(ListName).then(res => { console.log(res) });
+    With Site URL: spGetListItems(ListName, SiteURL).then(res => { console.log(res) });
     
 #### Use: 
         document.addEventListener("DOMContentLoaded", function(event){
-            var listItems = spGetListItems('test');
+            spGetListColumns('List1').then(res => { console.log(res) });
         });
 
 ## SharePoint -- Create List Item:
-    Without Site URL: spCreateListItem(ListName, ItemProperties);
-    With Site URL: spCreateListItem(ListName, ItemProperties, SiteURL);
+    Without Site URL: spCreateListItem('ListName', itemProperties).then(res => { console.log('Item was created!') });
+    With Site URL: spCreateListItem('ListName', ItemProperties, SiteURL).then(res => { console.log('Item was created!') });
     
 #### Use: 
         document.addEventListener("DOMContentLoaded", function(event){
             var itemProperties = {};
             itemProperties['Title'] = 'test';
 
-            spCreateListItem('test', itemProperties);
+            spCreateListItem('test', itemProperties).then(res => { console.log('Item was created!') });
         });
 
 ## SharePoint -- Update List Item By ID:
-    Without Site URL: spUpdateListItemById(ListName, ItemID, ItemProperties);
-    With Site URL: spUpdateListItemById(ListName, ItemID, ItemProperties, SiteURL);
+    Without Site URL: spUpdateListItemById('ListName', ItemID, ItemProperties)).then(res => { console.log('Item was updated!') });
+    With Site URL: spUpdateListItemById('ListName', ItemID, ItemProperties, SiteURL)).then(res => { console.log('Item was updated!') });
     
 #### Use: 
         document.addEventListener("DOMContentLoaded", function(event){
             var itemProperties = {};
             itemProperties['Title'] = 'test';
 
-            spUpdateListItemById('test', 2, itemProperties);
+            spUpdateListItemById('test', 2, itemProperties).then(res => { console.log('Item was updated!') });
         });
 
 ## SharePoint -- Get List Item by ID:
-    Without Site URL: spGetListItemById(ListName, ItemID);
-    With Site URL: spGetListItemById(ListName, ItemID, ItemProperties, SiteURL);
+    Without Site URL: spGetListItemById('ListName', ItemID).then(res => { console.log(res) });
+    With Site URL: spGetListItemById('ListName', ItemID, ItemProperties, SiteURL).then(res => { console.log(res) });
     
 #### Use: 
         document.addEventListener("DOMContentLoaded", function(event){
-            var listItem = spGetListItemById('test', 2);
+            spGetListItemById('test', 2).then(res => { console.log(res) });
         });
 
 ## SharePoint -- Get List Columns (Title, Type, DisplayName, Required):
-    Without Site URL: spGetListColumns(ListName);
-    With Site URL: spGetListColumns(ListName, SiteURL);
+    Without Site URL: spGetListColumns('ListName').then(res => { console.log(res) });
+    With Site URL: spGetListColumns('ListName', SiteURL).then(res => { console.log(res) });
     
 #### Use: 
         document.addEventListener("DOMContentLoaded", function(event){
-            var listItem = spGetListItemById('test', 2);
+            spGetListColumns('test').then(res => { console.log(res) });
         });
 
 ## SharePoint -- Get All List:
@@ -110,7 +110,7 @@ In SharePoint, the best place to store a .js file is within your Site Assets (Do
     
 #### Use: 
         document.addEventListener("DOMContentLoaded", function(event){
-            var listColumns = spGetAllLists('test');
+            spGetAllLists().then(res => { console.log(res) });
         });
 
 ## SharePoint -- Modal Dialog (URL, HTML):
