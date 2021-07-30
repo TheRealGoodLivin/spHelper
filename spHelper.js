@@ -10,7 +10,7 @@
 
     USE: 
         document.addEventListener("DOMContentLoaded", function(event){
-            spDeleteList('test');
+            spDeleteList('test').then(res => { console.log('List was deleted!') });
         });
 */
 function spDeleteList(listTitle, siteURL = _spPageContextInfo.webAbsoluteUrl) {
@@ -28,14 +28,13 @@ function spDeleteList(listTitle, siteURL = _spPageContextInfo.webAbsoluteUrl) {
         credentials: 'include'
     };
 
-    fetch(listPostURL, postOptions).then(function(response) {
-        if (response.ok) {
-            console.log('Response was good!');
-        } else {
+    return fetch(listPostURL, postOptions).then(function(response) {
+        if (!response.ok) {
             throw new Error('Error');
         }
-    }).catch(function(error) {
+    }).catch(error => {
         console.error(error);
+        return Promise.reject(error);
     });
 }
 
@@ -44,7 +43,7 @@ function spDeleteList(listTitle, siteURL = _spPageContextInfo.webAbsoluteUrl) {
 
     USE: 
         document.addEventListener("DOMContentLoaded", function(event){
-            spDeleteListItem('test', '1');
+            spDeleteListItem('test', '1').then(res => { console.log('Item was deleted!') });
         });
 */
 function spDeleteListItem(listTitle, itemId, siteURL = _spPageContextInfo.webAbsoluteUrl) {
@@ -62,14 +61,13 @@ function spDeleteListItem(listTitle, itemId, siteURL = _spPageContextInfo.webAbs
         credentials: 'include'
     };
 
-    fetch(listPostURL, postOptions).then(function(response) {
-        if (response.ok) {
-            console.log('Response was good!');
-        } else {
+    return fetch(listPostURL, postOptions).then(function(response) {
+        if (!response.ok) {
             throw new Error('Error!');
         }
-    }).catch(function(error) {
+    }).catch(error => {
         console.error(error);
+        return Promise.reject(error);
     });
 }
 
@@ -78,7 +76,7 @@ function spDeleteListItem(listTitle, itemId, siteURL = _spPageContextInfo.webAbs
 
     USE: 
         document.addEventListener("DOMContentLoaded", function(event){
-            var currentUserId = spGetCurrentUserId();
+            spGetCurrentUserId().then(res => { console.log(res) });
         });
 */
 function spGetCurrentUserId() {
@@ -91,18 +89,11 @@ function spGetCurrentUserId() {
         })
     };
 
-    fetch(listGetURL, getOptions).then(function(response) {
-        if (response.ok) {
-            console.log('Response was good!');
-            return response.json();
-        } else {
-            throw new Error('Error!');
-        }
-    }).then(function(data) {
-        console.log('Success: Current User ID ' + data.d.Id + '.');
+    return fetch(listGetURL, getOptions).then(response => response.json()).then(data => {
         return data.d.Id;
-    }).catch(function(error) {
+    }).catch(error => {
         console.error(error);
+        return Promise.reject(error);
     });
 }
 
@@ -111,7 +102,7 @@ function spGetCurrentUserId() {
 
     USE: 
         document.addEventListener("DOMContentLoaded", function(event){
-            var userData = spGetUserById(10);
+            spGetUserById(10).then(res => { console.log(res) });
         });
 */
 function spGetUserById(userId, siteURL = _spPageContextInfo.webAbsoluteUrl) {
@@ -124,17 +115,11 @@ function spGetUserById(userId, siteURL = _spPageContextInfo.webAbsoluteUrl) {
         })
     };
 
-    fetch(listGetURL, getOptions).then(function(response) {
-        if (response.ok) {
-            console.log('Response was good!');
-            return response.json();
-        } else {
-            throw new Error('Error!');
-        }
-    }).then(function(data) {
+    return fetch(listGetURL, getOptions).then(response => response.json()).then(data => {
         return data;
-    }).catch(function(error) {
+    }).catch(error => {
         console.error(error);
+        return Promise.reject(error);
     });
 }
 
@@ -143,7 +128,7 @@ function spGetUserById(userId, siteURL = _spPageContextInfo.webAbsoluteUrl) {
 
     USE: 
         document.addEventListener("DOMContentLoaded", function(event){
-            var listItems = spGetListItems('test');
+            spGetListColumns('List1').then(res => { console.log(res) });
         });
 */
 function spGetListItems(listTitle, listParameters = '', siteURL = _spPageContextInfo.webAbsoluteUrl) {
@@ -158,17 +143,10 @@ function spGetListItems(listTitle, listParameters = '', siteURL = _spPageContext
     };
 
     var results = [];
-    spGetItems();
+    return spGetItems();
 
     function spGetItems() {
-        fetch(listGetURL, getOptions).then(function(response) {
-            if (response.ok) {
-                console.log('Response was good!');
-                return response.json();
-            } else {
-                throw new Error('Error!');
-            }
-        }).then(function(data) {
+        return fetch(listGetURL, getOptions).then(response => response.json()).then(data => {
             results = results.concat(data.d.results);
             if (data.d.__next) {
                 listGetURL = data.d.__next;
@@ -176,8 +154,9 @@ function spGetListItems(listTitle, listParameters = '', siteURL = _spPageContext
             } else {
                 return results;
             }
-        }).catch(function(error) {
+        }).catch(error => {
             console.error(error);
+            return Promise.reject(error);
         });
     }
 }
@@ -190,7 +169,7 @@ function spGetListItems(listTitle, listParameters = '', siteURL = _spPageContext
             var itemProperties = {};
             itemProperties['Title'] = 'test';
 
-            spCreateListItem('test', itemProperties);
+            spCreateListItem('test', itemProperties).then(res => { console.log('Item was created!') });
         });
 */
 function spCreateListItem(listTitle, itemProperties, siteURL = _spPageContextInfo.webAbsoluteUrl) {
@@ -206,13 +185,7 @@ function spCreateListItem(listTitle, itemProperties, siteURL = _spPageContextInf
         credentials: 'include'
     }
     
-    fetch(listGetURL, getOptions).then(function(response) {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Error!');
-        }
-    }).then(function(data) {
+    return fetch(listGetURL, getOptions).then(response => response.json()).then(data => {
         var itemPayload = {
             __metadata: {
                 type: data.d.ListItemEntityTypeFullName
@@ -234,13 +207,12 @@ function spCreateListItem(listTitle, itemProperties, siteURL = _spPageContextInf
         }
         return fetch(listPostURL, postOptions);
     }).then(function(response) {
-        if (response.ok) {
-            console.log('Response was good!');
-        } else {
+        if (!response.ok) {
             throw new Error('Error!');
         }
-    }).catch(function(error) {
+    }).catch(error => {
         console.error(error);
+        return Promise.reject(error);
     });
 }
 
@@ -252,7 +224,7 @@ function spCreateListItem(listTitle, itemProperties, siteURL = _spPageContextInf
             var itemProperties = {};
             itemProperties['Title'] = 'test';
 
-            spUpdateListItemById('test', 2, itemProperties);
+            spUpdateListItemById('test', 2, itemProperties).then(res => { console.log('Item was updated!') });
         });
 */
 function spUpdateListItemById(listTitle, itemId, itemProperties, siteURL = _spPageContextInfo.webAbsoluteUrl) {
@@ -268,13 +240,7 @@ function spUpdateListItemById(listTitle, itemId, itemProperties, siteURL = _spPa
         credentials: 'include'
     }
 
-    fetch(listGetURL, getOptions).then(function(response) {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Error!');
-        }
-    }).then(function(data) {
+    return fetch(listGetURL, getOptions).then(response => response.json()).then(data => {
         var itemPayload = {
             __metadata: {
                 type: data.d.__metadata.type
@@ -299,14 +265,12 @@ function spUpdateListItemById(listTitle, itemId, itemProperties, siteURL = _spPa
         
         return fetch(listPostURL, postOptions);
     }).then(function(response) {
-        if (response.ok) {
-            console.log('Response was good!');
-        }
-        else {
+        if (!response.ok) {
             throw new Error('Error!');
         }
-    }).catch(function(error) {
+    }).catch(error => {
         console.error(error);
+        return Promise.reject(error);
     });
 }
 
@@ -315,7 +279,7 @@ function spUpdateListItemById(listTitle, itemId, itemProperties, siteURL = _spPa
 
     USE: 
         document.addEventListener("DOMContentLoaded", function(event){
-            var listItem = spGetListItemById('test', 2);
+            spGetListItemById('test', 2).then(res => { console.log(res) });
         });
 */
 function spGetListItemById(listTitle, itemId, siteURL = _spPageContextInfo.webAbsoluteUrl) {
@@ -328,17 +292,11 @@ function spGetListItemById(listTitle, itemId, siteURL = _spPageContextInfo.webAb
         })
     };
 
-    fetch(listGetURL, getOptions).then(function(response) {
-        if (response.ok) {
-            console.log('Response was good!');
-            return response.json();
-        } else {
-            throw new Error('Error!');
-        }
-    }).then(function(data) {
+    return fetch(listGetURL, getOptions).then(response => response.json()).then(data => {
         return data;
-    }).catch(function(error) {
+    }).catch(error => {
         console.error(error);
+        return Promise.reject(error);
     });
 }
 
@@ -347,7 +305,7 @@ function spGetListItemById(listTitle, itemId, siteURL = _spPageContextInfo.webAb
 
     USE: 
         document.addEventListener("DOMContentLoaded", function(event){
-            var listColumns = spGetListColumns('test');
+            spGetListColumns('test').then(res => { console.log(res) });
         });
 */
 function spGetListColumns(listTitle, siteURL = _spPageContextInfo.webAbsoluteUrl) {
@@ -361,17 +319,10 @@ function spGetListColumns(listTitle, siteURL = _spPageContextInfo.webAbsoluteUrl
     };
 
     var results = [];
-    spGetItems();
+    return spGetItems();
 
     function spGetItems() {
-        fetch(listGetURL, getOptions).then(function(response) {
-            if (response.ok) {
-                console.log('Response was good!');
-                return response.json();
-            } else {
-                throw new Error('Error!');
-            }
-        }).then(function(data) {
+        return fetch(listGetURL, getOptions).then(response => response.json()).then(data => {
             results = results.concat(data.d.results);
             if (data.d.__next) {
                 listGetURL = data.d.__next;
@@ -381,6 +332,7 @@ function spGetListColumns(listTitle, siteURL = _spPageContextInfo.webAbsoluteUrl
             }
         }).catch(function(error) {
             console.error(error);
+            return Promise.reject(error);
         });
     }
 }
@@ -390,7 +342,7 @@ function spGetListColumns(listTitle, siteURL = _spPageContextInfo.webAbsoluteUrl
 
     USE: 
         document.addEventListener("DOMContentLoaded", function(event){
-            var listColumns = spGetAllLists('test');
+            spGetAllLists().then(res => { console.log(res) });
         });
 */
 function spGetAllLists(siteURL = _spPageContextInfo.webAbsoluteUrl) {
@@ -404,27 +356,20 @@ function spGetAllLists(siteURL = _spPageContextInfo.webAbsoluteUrl) {
     };
 
     var results = [];
-    spGetItems();
+    return spGetItems();
 
     function spGetItems() {
-        fetch(listGetURL, getOptions).then(function(response) {
-            if (response.ok) {
-                console.log('Response was good!');
-                return response.json();
-            } else {
-                throw new Error('Error!');
-            }
-        }).then(function(data) {
+        return fetch(listGetURL, getOptions).then(response => response.json()).then(data => {
             results = results.concat(data.d.results);
             if (data.d.__next) {
                 listGetURL = data.d.__next;
                 spGetItems();
             } else {
-                console.log(results);
                 return results;
             }
-        }).catch(function(error) {
+        }).catch(error => {
             console.error(error);
+            return Promise.reject(error);
         });
     }
 }
