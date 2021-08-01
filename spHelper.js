@@ -2,7 +2,7 @@
     AUTHOR: Austin Livengood
     DATE: 22 Jul 2021
 
-    NOTE: if the script you are using is on the same site as the list, remove siteURL variable from function. It will use the same site URL.
+    NOTE: if the script you are using is on the same site as the list, remove siteURL variable from function. It will grab the same site URL.
 */
 
 /*
