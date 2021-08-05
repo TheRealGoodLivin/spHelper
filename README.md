@@ -9,8 +9,9 @@ A Javascript library to assist with common/useful SharePoint REST List functions
  > - Purely written in Javascript without the requirements of additional libraries.
  > - For **siteURL**, if the List is on the same site as your script, remove the variable and it will using the current site.
 
-# Feature Changes
+# Future Changes
  > - Custom Modal Dialog for custom list fields.
+ > - Updating Groups for User
 
 ## How To Use
 In SharePoint, the best place to store a .js file is within your Site Assets (Document Library) folder within your Site. You can use 'spHelper.js' or the 'spHelper.min.js'. Once you have uploaded the file, you just reference it like any other JavaScript library reference:
@@ -27,7 +28,7 @@ In SharePoint, the best place to store a .js file is within your Site Assets (Do
     With Site URL: spDeleteList('ListName', SiteURL).then(res => { console.log('List was deleted!') });
     
 #### Use: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             spDeleteList('ListName').then(res => { console.log('List was deleted!') });
         });
         
@@ -36,23 +37,31 @@ In SharePoint, the best place to store a .js file is within your Site Assets (Do
     With Site URL: spDeleteListItem('ListName', ItemID, SiteURL).then(res => { console.log('Item was deleted!') });
     
 #### Use: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             spDeleteListItem('ListName', ItemID).then(res => { console.log('Item was deleted!') });
         });
 
-## SharePoint -- Get Current User ID:
-    spGetCurrentUserId().then(res => { console.log(res) });
+## SharePoint -- Get Current User Data:
+    spGetCurrentUser().then(res => { console.log(res) });
     
 #### Use: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             spGetCurrentUserId().then(res => { console.log(res) });
+        });
+        
+## SharePoint -- Get Current User ID:
+    spGetCurrentUserId();
+    
+#### Use: 
+        document.addEventListener("DOMContentLoaded", function(event) {
+            console.log(spGetCurrentUserId());
         });
 
 ## SharePoint -- Get User Data By ID:
     spGetUserById(UserID).then(res => { console.log(res) });
     
 #### Use: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             spGetUserById(10).then(res => { console.log(res) });
         });
 
@@ -61,7 +70,7 @@ In SharePoint, the best place to store a .js file is within your Site Assets (Do
     With Site URL: spGetListItems(ListName, SiteURL).then(res => { console.log(res) });
     
 #### Use: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             spGetListColumns('List1').then(res => { console.log(res) });
         });
 
@@ -70,7 +79,7 @@ In SharePoint, the best place to store a .js file is within your Site Assets (Do
     With Site URL: spCreateListItem('ListName', ItemProperties, SiteURL).then(res => { console.log('Item was created!') });
     
 #### Use: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             var itemProperties = {};
             itemProperties['Title'] = 'test';
 
@@ -82,7 +91,7 @@ In SharePoint, the best place to store a .js file is within your Site Assets (Do
     With Site URL: spUpdateListItemById('ListName', ItemID, ItemProperties, SiteURL)).then(res => { console.log('Item was updated!') });
     
 #### Use: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             var itemProperties = {};
             itemProperties['Title'] = 'test';
 
@@ -94,7 +103,7 @@ In SharePoint, the best place to store a .js file is within your Site Assets (Do
     With Site URL: spGetListItemById('ListName', ItemID, ItemProperties, SiteURL).then(res => { console.log(res) });
     
 #### Use: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             spGetListItemById('test', 2).then(res => { console.log(res) });
         });
 
@@ -103,7 +112,7 @@ In SharePoint, the best place to store a .js file is within your Site Assets (Do
     With Site URL: spGetListColumns('ListName', SiteURL).then(res => { console.log(res) });
     
 #### Use: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             spGetListColumns('test').then(res => { console.log(res) });
         });
 
@@ -112,7 +121,7 @@ In SharePoint, the best place to store a .js file is within your Site Assets (Do
     With Site URL: spGetListColumns(SiteURL);
     
 #### Use: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             spGetAllLists().then(res => { console.log(res) });
         });
 
@@ -122,7 +131,7 @@ In SharePoint, the best place to store a .js file is within your Site Assets (Do
     
 #### Use: 
         HTML:
-            document.addEventListener("DOMContentLoaded", function(event){
+            document.addEventListener("DOMContentLoaded", function(event) {
                 var htmlElement = document.createElement("p");
                 var messageNode = document.createTextNode("Content of dialog");
                 htmlElement.appendChild(messageNode);
@@ -131,6 +140,6 @@ In SharePoint, the best place to store a .js file is within your Site Assets (Do
             });
 
         URL:
-            document.addEventListener("DOMContentLoaded", function(event){
+            document.addEventListener("DOMContentLoaded", function(event) {
                 spModalOpen('Test', 500, 500, 'https://google.com', 'url');
             });
