@@ -1,6 +1,7 @@
 /*
     AUTHOR: Austin Livengood
     DATE: 22 Jul 2021
+    UPDATED: 5 Aug 2021
 
     NOTE: if the script you are using is on the same site as the list, remove siteURL variable from function. It will grab the same site URL.
 */
@@ -9,7 +10,7 @@
     DESCRIPTION: Deletes an entire list using Fetch. Use with caution.
 
     USE: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             spDeleteList('test').then(res => { console.log('List was deleted!') });
         });
 */
@@ -42,7 +43,7 @@ function spDeleteList(listTitle, siteURL = _spPageContextInfo.webAbsoluteUrl) {
     DESCRIPTION: Deletes an item from a list using Fetch. Use with caution.
 
     USE: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             spDeleteListItem('test', '1').then(res => { console.log('Item was deleted!') });
         });
 */
@@ -72,15 +73,15 @@ function spDeleteListItem(listTitle, itemId, siteURL = _spPageContextInfo.webAbs
 }
 
 /*
-    DESCRIPTION: Grabs current user ID using Fetch.
+    DESCRIPTION: Grabs current user data using fetch.
 
     USE: 
-        document.addEventListener("DOMContentLoaded", function(event){
-            spGetCurrentUserId().then(res => { console.log(res) });
+        document.addEventListener("DOMContentLoaded", function(event) {
+            spGetCurrentUser().then(res => { console.log(res) });
         });
 */
-function spGetCurrentUserId() {
-    var listGetURL = _spPageContextInfo.webAbsoluteUrl + "/_api/web/CurrentUser";
+function spGetCurrentUser() {
+    var listGetURL = _spPageContextInfo.webAbsoluteUrl + "/_api/web/CurrentUser/?$expand=groups";
     var getOptions = {
         method: 'GET',
         headers: new Headers({
@@ -90,7 +91,7 @@ function spGetCurrentUserId() {
     };
 
     return fetch(listGetURL, getOptions).then(response => response.json()).then(data => {
-        return data.d.Id;
+        return data;
     }).catch(error => {
         console.error(error);
         return Promise.reject(error);
@@ -98,15 +99,28 @@ function spGetCurrentUserId() {
 }
 
 /*
+    DESCRIPTION: Grabs current user ID.
+
+    USE: 
+        document.addEventListener("DOMContentLoaded", function(event) {
+            console.log(spGetCurrentUserId());
+        });
+*/
+function spGetCurrentUserId() {
+    var userId = _spPageContextInfo.userId;
+    return userId;
+}
+
+/*
     DESCRIPTION: Grabs user by ID using Fetch.
 
     USE: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             spGetUserById(10).then(res => { console.log(res) });
         });
 */
 function spGetUserById(userId, siteURL = _spPageContextInfo.webAbsoluteUrl) {
-    var listGetURL = siteURL + "/_api/Web/SiteUserInfoList/Items?$filter=Id eq " + userId;
+    var listGetURL = siteURL + "/_api/Web/SiteUserInfoList/Items?$filter=Id eq " + userId + "&$expand=groups";
     var getOptions = {
         method: 'GET',
         headers: new Headers({
@@ -127,7 +141,7 @@ function spGetUserById(userId, siteURL = _spPageContextInfo.webAbsoluteUrl) {
     DESCRIPTION: Grabs all items from a List
 
     USE: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             spGetListColumns('List1').then(res => { console.log(res) });
         });
 */
@@ -165,7 +179,7 @@ function spGetListItems(listTitle, listParameters = '', siteURL = _spPageContext
     DESCRIPTION: Create list item
 
     USE: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             var itemProperties = {};
             itemProperties['Title'] = 'test';
 
@@ -220,7 +234,7 @@ function spCreateListItem(listTitle, itemProperties, siteURL = _spPageContextInf
     DESCRIPTION: Update list item by id
 
     USE: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             var itemProperties = {};
             itemProperties['Title'] = 'test';
 
@@ -278,7 +292,7 @@ function spUpdateListItemById(listTitle, itemId, itemProperties, siteURL = _spPa
     DESCRIPTION: Get List Item by Id
 
     USE: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             spGetListItemById('test', 2).then(res => { console.log(res) });
         });
 */
@@ -304,7 +318,7 @@ function spGetListItemById(listTitle, itemId, siteURL = _spPageContextInfo.webAb
     DESCRIPTION: Get List Column Names and Column Types
 
     USE: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             spGetListColumns('test').then(res => { console.log(res) });
         });
 */
@@ -341,7 +355,7 @@ function spGetListColumns(listTitle, siteURL = _spPageContextInfo.webAbsoluteUrl
     DESCRIPTION: Get All Site Lists
 
     USE: 
-        document.addEventListener("DOMContentLoaded", function(event){
+        document.addEventListener("DOMContentLoaded", function(event) {
             spGetAllLists().then(res => { console.log(res) });
         });
 */
@@ -384,7 +398,7 @@ function spGetAllLists(siteURL = _spPageContextInfo.webAbsoluteUrl) {
 
     USE:
         HTML:
-            document.addEventListener("DOMContentLoaded", function(event){
+            document.addEventListener("DOMContentLoaded", function(event) {
                 var htmlElement = document.createElement("p");
                 var messageNode = document.createTextNode("Content of dialog");
                 htmlElement.appendChild(messageNode);
@@ -393,7 +407,7 @@ function spGetAllLists(siteURL = _spPageContextInfo.webAbsoluteUrl) {
             });
 
         URL:
-            document.addEventListener("DOMContentLoaded", function(event){
+            document.addEventListener("DOMContentLoaded", function(event) {
                 spModalOpen('Test', 500, 500, 'https://google.com', 'url');
             });
 */
