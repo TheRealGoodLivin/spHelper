@@ -432,7 +432,7 @@ function spGetAllLists(siteURL = _spPageContextInfo.webAbsoluteUrl) {
                 spModalOpen('Test', 500, 500, 'https://google.com', 'url');
             });
 */
-function spModalOpen(modalTitle, modalWidth, modalHeight, modalInformation, modalOption = 'url', modalAutoResize = false, modalRefresh = false, modalRedirect = false, modalRedirectOption = 'alert', modalRedirectInformation) {
+function spModalOpen(modalTitle, modalWidth, modalHeight, modalInformation, modalOption = 'url', modalAutoResize = false, modalRefresh = false, modalRedirect = false, modalRedirectOption = 'alert', modalRedirectInformation = '') {
     var options = {
         allowMaximize: false,
         showClose: true,
