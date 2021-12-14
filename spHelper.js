@@ -432,20 +432,41 @@ function spGetAllLists(siteURL = _spPageContextInfo.webAbsoluteUrl) {
                 spModalOpen('Test', 500, 500, 'https://google.com', 'url');
             });
 */
-function spModalOpen(modalTitle, modalWidth, modalHeight, modalInformation, modalOption = 'url', modalAutoResize = false, modalRefresh = false) {
+function spModalOpen(modalTitle, modalWidth, modalHeight, modalInformation, modalOption = 'url', modalAutoResize = false, modalRefresh = false, modalRedirect = false, modalRedirectOption = 'alert', modalRedirectInformation) {
     var options = {
         allowMaximize: false,
         showClose: true,
         autoSize: modalAutoResize,
-        width: modalWidth,
-        height: modalHeight,
         title: modalTitle,
         dialogReturnValueCallback: function dialogReturnValueCallback(dialogResult) {
             if (dialogResult != SP.UI.DialogResult.cancel) {
                 if(modalRefresh) SP.UI.ModalDialog.RefreshPage(dialogResult);
+
+                if(modalRedirect) {
+                  if (modalRedirectOption === 'url') {
+                    window.location.href = modalRedirectInformation;
+                  } else if (modalRedirectOption === 'alert') {
+                    alert(modalRedirectInformation);
+                  }
+                }
             }
         }
     };
+
+    if (modalWidth === 0 && modalAutoResize === true) {
+    } else if (modalWidth !== 0 && modalAutoResize === false) {
+      options['width'] = modalWidth;
+    } else if (modalWidth === 0 && modalAutoResize === false) {
+      options['width'] = 100;
+    }
+
+    if (modalHeight === 0 && modalAutoResize === true) {
+    } else if (modalHeight !== 0 && modalAutoResize === false) {
+      options['height'] = modalHeight;
+    } if (modalHeight === 0 && modalAutoResize === false) {
+      options['height'] = 100;
+    } 
+
     options[modalOption] = modalInformation;
 
     SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', options);
