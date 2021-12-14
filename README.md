@@ -150,8 +150,7 @@ In SharePoint, the best place to store a .js file is within your Site Assets (Do
         });
 
 ## SharePoint -- Modal Dialog (URL, HTML):
-    Without Site URL: spGetListColumns();
-    With Site URL: spGetListColumns(SiteURL);
+    spModalOpen(modalTitle, modalWidth, modalHeight, modalInformation, modalOption = 'url', modalAutoResize = false, modalRefresh = false, modalRedirect = false, modalRedirectOption = 'alert', modalRedirectInformation = '')
     
 #### Use: 
         HTML:
