@@ -32,8 +32,8 @@ function spCreateDocumentLibFolder(listTitle, itemName, siteURL = _spPageContext
     });
 }
 
-function spUploadDocumentLibItem (listTitle, itemLocation = '', itemFiles, siteURL = _spPageContextInfo.webAbsoluteUrl) {
-    UpdateFormDigest (_spPageContextInfo.webServerRelativeUrl, _spFormDigestRefreshInterval);
+function spUploadDocumentLibItem(listTitle, itemLocation = '', itemFile, siteURL = _spPageContextInfo.webAbsoluteUrl) {
+    UpdateFormDigest(_spPageContextInfo.webServerRelativeUrl, _spFormDigestRefreshInterval);
     var listGetURL = siteURL + "/_api/lists/GetByTitle('" + listTitle + "')/RootFolder";
     var getOptions = {
         method: 'GET',
@@ -43,38 +43,32 @@ function spUploadDocumentLibItem (listTitle, itemLocation = '', itemFiles, siteU
         })
     };
 
-    return fetch (listGetURL, getOptions).then(response => response.json()).then(data => {
-        return Promise.all([].map.call(itemFiles, function (file) {
-            return new Promise(function (resolve, reject) {
-                var readFile = new FileReader();
-                readFile.onloadend = function () {
-                    resolve({ result: readFile.result, file: file });
-                };
-                reader.readAsArrayBuffer(file);
-            });
-        })).then (function (results) {
-            return results.forEach (function (result) {
-                var listPostURL = siteURL + "/_api/web/GetFolderByServerRelativeUrl('" + data.d.ServerRelativeUrl + "/" + itemLocation + "')/Files/add(url='" + result.file.name + "',overwrite=true)";
-                var postOptions = {
-                    method: 'POST',
-                    data: result,
-                    async: false,
-                    processData: false,
-                    headers: new Headers({
-                        'X-RequestDigest': document.querySelector('#__REQUESTDIGEST').value,
-                        'Accept': 'application/json; odata=verbose',
-                        'Content-Type': 'application/json; odata=verbose',
-                        'Content-Length': result.byteLength
-                    }),
-                    credentials: 'include'
-                };
-                return fetch (listPostURL, postOptions);
-            });
+    return fetch(listGetURL, getOptions).then(response => response.json()).then(data => {
+        return new Promise((resolve, reject) => {
+            let fr = new FileReader();
+            fr.onload = x=> resolve(fr.result);
+            fr.readAsArrayBuffer(itemFile); // fr.readAsDataURL(file);
+	    }).then(function (results) {
+            //var listPostURL = siteURL + "/_api/web/GetFolderByServerRelativeUrl('" + data.d.ServerRelativeUrl + "/" + itemLocation + "')/Files/add(url='" + results.file.name + "',overwrite=true)";
+            var listPostURL = siteURL + "/_api/Web/GetFolderByServerRelativeUrl(@target)/Files/add(overwrite=true, url='" + results.file.name + "')?@target='" + data.d.ServerRelativeUrl + "/" + itemLocation + "'&$expand=ListItemAllFields"; 
+            var postOptions = {
+                method: 'POST',
+                data: results,
+                async: false,
+                processData: false,
+                headers: new Headers({
+                    'X-RequestDigest': document.querySelector('#__REQUESTDIGEST').value,
+                    'Accept': 'application/json; odata=verbose',
+                    'Content-Type': 'application/json; odata=verbose',
+                    'Content-Length': results.byteLength
+                }),
+                credentials: 'include'
+            };
+            return fetch (listPostURL, postOptions);
         });
     }).then(function (response) {
-        if (!response.ok) {
-            throw new Error('Error!');
-        }
+        if (response.ok) return response.json();
+        else throw new Error('Error!');
     }).catch(error => {
         console.error (error);
         return Promise.reject (error);
