@@ -1,6 +1,6 @@
 /*
     DATE: 22 Jul 2021
-    UPDATED: 5 Aug 2021
+    UPDATED: 23 Feb 2022
     
     MIT License
 
@@ -408,6 +408,100 @@ function spGetAllLists(siteURL = _spPageContextInfo.webAbsoluteUrl) {
         });
     }
 }
+
+/*
+    DESCRIPTION: Create Document Library Folder
+
+    USE: 
+        document.addEventListener("DOMContentLoaded", function(event) {
+            spCreateDocumentLibFolder('Document Library', 'Test Folder').then(res => { console.log(res) });
+        });
+*/
+function spCreateDocumentLibFolder(listTitle, itemName, siteURL = _spPageContextInfo.webAbsoluteUrl) {
+    UpdateFormDigest(_spPageContextInfo.webServerRelativeUrl, _spFormDigestRefreshInterval);
+    var listGetURL = siteURL + "/_api/lists/GetByTitle('" + listTitle + "')/RootFolder";
+    var getOptions = {
+        method: 'GET',
+        headers: new Headers({
+            'Accept': 'application/json; odata=verbose',
+            'content-type': 'application/json; odata=verbose'
+        })
+    };
+
+    return fetch(listGetURL, getOptions).then(response => response.json()).then(data => {
+        var listPostURL = siteURL + "/_api/Web/Folders/add('" + data.d.ServerRelativeUrl + "/" + itemName + "')";
+        var postOptions = {
+            method: 'POST',
+            headers: new Headers({
+                'X-RequestDigest': document.querySelector('#__REQUESTDIGEST').value,
+                'Accept': 'application/json; odata=verbose',
+                'Content-Type': 'application/json; odata=verbose'
+            }),
+            credentials: 'include'
+        };
+
+        return fetch(listPostURL, postOptions);
+    }).then(function(response) {
+        if (!response.ok) {
+            throw new Error('Error!');
+        }
+    }).catch(error => {
+        console.error(error);
+        return Promise.reject(error);
+    });
+}
+
+/*
+    DESCRIPTION: Create Document Library Folder
+
+    USE: 
+        document.addEventListener("DOMContentLoaded", function(event) {
+            spUploadDocumentLibItem('Document Library', 'Test Folder', document.querySelector('#fileSelectorHTML').files[0]).then(res => { console.log(res) });
+        });
+*/
+function spUploadDocumentLibItem(listTitle, itemLocation = '', itemFile, siteURL = _spPageContextInfo.webAbsoluteUrl) {
+    UpdateFormDigest(_spPageContextInfo.webServerRelativeUrl, _spFormDigestRefreshInterval);
+    var listGetURL = siteURL + "/_api/lists/GetByTitle('" + listTitle + "')/RootFolder";
+    var getOptions = {
+        method: 'GET',
+        headers: new Headers({
+            'Accept': 'application/json; odata=verbose',
+            'content-type': 'application/json; odata=verbose'
+        })
+    };
+
+    return new Promise((resolve, reject) => {
+        var reader = new FileReader();
+        reader.onload = function(e) { resolve(e.target.result); }
+        reader.onerror = function(e) { reject(e.target.error); }
+        reader.readAsArrayBuffer(itemFile);
+    }).then(function (file) {
+        return fetch(listGetURL, getOptions).then(response => response.json()).then(data => {
+            var listPostURL = siteURL + "/_api/Web/GetFolderByServerRelativeUrl(@target)/Files/add(overwrite=true, url='" + itemFile.name + "')?@target='" + data.d.ServerRelativeUrl + "/" + itemLocation + "'&$expand=ListItemAllFields"; 
+            var postOptions = {
+                method: 'POST',
+                body: file,
+                async: false,
+                binaryStringRequestBody: true,
+                headers: new Headers({
+                    'X-RequestDigest': document.querySelector('#__REQUESTDIGEST').value,
+                    'Accept': 'application/json; odata=verbose'
+                }),
+                credentials: 'include'
+            };
+            return fetch(listPostURL, postOptions);
+        }).then(function(response) {
+            if(response.ok) return response.json();
+            else throw new Error('Error!');
+        }).catch(error => {
+            console.error(error);
+            return Promise.reject(error);
+        });
+    }).catch(error => {
+        console.error(error);
+        return Promise.reject(error);
+    });
+} 
 
 /*
     DESCRIPTION: SharePoint Modal with URL or HTML
