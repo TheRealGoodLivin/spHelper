@@ -163,7 +163,7 @@ function spGetUserById(userId, siteURL = _spPageContextInfo.webAbsoluteUrl) {
 
     USE: 
         document.addEventListener("DOMContentLoaded", function(event) {
-            spGetListColumns('List1').then(res => { console.log(res) });
+            spGetListItems('List1').then(res => { console.log(res) });
         });
 */
 function spGetListItems(listTitle, listParameters = '', siteURL = _spPageContextInfo.webAbsoluteUrl) {
