@@ -452,6 +452,39 @@ function spCreateDocumentLibFolder(listTitle, itemName, siteURL = _spPageContext
 }
 
 /*
+    DESCRIPTION: Delete Document Library Folder
+
+    USE: 
+        document.addEventListener("DOMContentLoaded", function(event) {
+            spCreateDocumentLibFolder('Document Library', 'Test Folder').then(res => { console.log(res) });
+        });
+*/
+function spDeleteDocumentLibFolder(listTitle, itemName, siteURL = _spPageContextInfo.webAbsoluteUrl) {
+    UpdateFormDigest(_spPageContextInfo.webServerRelativeUrl, _spFormDigestRefreshInterval);
+
+    var listPostURL = siteURL + "/_api/web/GetFolderByServerRelativeUrl('" + listTitle + "/" + itemName + "')";
+    var postOptions = {
+        method: 'POST',
+        headers: new Headers({
+            'X-RequestDigest': document.querySelector('#__REQUESTDIGEST').value,
+            'Accept': 'application/json; odata=verbose',
+            'content-type': 'application/json; odata=verbose',
+            'X-HTTP-Method': 'DELETE',
+            'If-Match': '*'
+        }),
+        credentials: 'include'
+    };
+
+    return fetch(listPostURL, postOptions).then(function(response) {
+        if(response.ok) return response;
+        else throw new Error('Error!');
+    }).catch(error => {
+        console.error(error);
+        return Promise.reject(error);
+    });
+}
+
+/*
     DESCRIPTION: Create Document Library Folder
 
     USE: 
